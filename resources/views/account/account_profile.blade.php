@@ -86,9 +86,9 @@
                     <td>{{$key}}</td>
                     <td>{{date($general_setting->date_format, strtotime($return->created_at->toDateString()))}}</td>
                     <td>{{$return->reference_no}}</td>
-                    <td>{{number_format((float)$return->grand_total, 2, '.', '')}}</td>
+                    <td>{{number_format((float)$return->grand_total, 3, '.', '', ';')}}</td>
                     <td>0.00</td>
-                    <td>{{number_format((float)$balance, 2, '.', '')}}</td>
+                    <td>{{number_format((float)$balance, 3, '.', '', ';')}}</td>
                 </tr>
                 @endforeach
 
