@@ -162,6 +162,41 @@ class AccountsController extends Controller
         return view('account.account_statement', compact('lims_account_data', 'credit_list', 'debit_list', 'expense_list', 'return_list', 'purchase_return_list', 'payroll_list', 'recieved_money_transfer_list', 'sent_money_transfer_list', 'balance'));
     }
 
+    public function accountProfle(Request $request)
+    {
+        $data = $request->all();
+        $lims_account_data = Account::find($data['account_id']);
+        $credit_list = [];
+        $debit_list = [];
+        $expense_list = [];
+        $return_list = [];
+        $purchase_return_list = [];
+        $payroll_list = [];
+        $recieved_money_transfer_list = [];
+        $sent_money_transfer_list = [];
+        
+        if($data['type'] == '0' || $data['type'] == '2') {
+            $credit_list = Payment::whereNotNull('sale_id')->where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $recieved_money_transfer_list = MoneyTransfer::where('to_account_id', $data['account_id'])->get();
+        }
+        if($data['type'] == '0' || $data['type'] == '1'){
+            $debit_list = Payment::whereNotNull('purchase_id')->where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $expense_list = Expense::where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $return_list = Returns::where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $purchase_return_list = ReturnPurchase::where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $payroll_list = Payroll::where('account_id', $data['account_id'])->whereDate('created_at', '>=' , $data['start_date'])->whereDate('created_at', '<=' , $data['end_date'])->get();
+
+            $sent_money_transfer_list = MoneyTransfer::where('from_account_id', $data['account_id'])->get();
+        }
+        $balance = 0;
+        return view('account.account_profile', compact('lims_account_data', 'credit_list', 'debit_list', 'expense_list', 'return_list', 'purchase_return_list', 'payroll_list', 'recieved_money_transfer_list', 'sent_money_transfer_list', 'balance'));
+    }
+
     public function destroy($id)
     {
         if(!env('USER_VERIFIED'))
