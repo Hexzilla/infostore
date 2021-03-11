@@ -71,7 +71,7 @@ class CouponController extends Controller
             $lims_coupon_data->is_active = false;
             $lims_coupon_data->save();
         }
-        return 'Coupon deleted successfully!';
+        return 'The coupon have been deleted successfully!';
     }
 
     public function destroy($id)
@@ -79,6 +79,6 @@ class CouponController extends Controller
         $lims_coupon_data = Coupon::find($id);
         $lims_coupon_data->is_active = false;
         $lims_coupon_data->save();
-        return redirect('coupons')->with('not_permitted', 'Coupon deleted successfully');
+        return redirect('coupons')->with('not_permitted', 'The coupon have been deleted successfully');
     }
 }
