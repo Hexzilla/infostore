@@ -56,7 +56,7 @@ class CouponController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        if($data['type'] == 'percentage')
+        if($data['type'] == 'percentage' || $data['type'] == 'numberic')
             $data['minimum_amount'] = 0;
         $lims_coupon_data = Coupon::find($data['coupon_id']);
         $lims_coupon_data->update($data);
