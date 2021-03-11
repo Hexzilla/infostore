@@ -36,11 +36,11 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['used'] = 0;
         $data['user_id'] = Auth::id();
-        $data['is_active'] = true;
+        $data['used'] = 0;
+        $data['is_active'] = false;
         Coupon::create($data);
-        return redirect('coupons')->with('message', 'Coupon created successfully');
+        return redirect('coupons')->with('message', 'The coupon have been created successfully');
     }
 
     public function show($id)
