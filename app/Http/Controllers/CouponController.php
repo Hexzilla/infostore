@@ -36,11 +36,11 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['used'] = 0;
         $data['user_id'] = Auth::id();
-        $data['is_active'] = true;
+        $data['used'] = 0;
+        $data['is_active'] = false;
         Coupon::create($data);
-        return redirect('coupons')->with('message', 'Coupon created successfully');
+        return redirect('coupons')->with('message', 'The coupon have been created successfully');
     }
 
     public function show($id)
@@ -56,7 +56,7 @@ class CouponController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        if($data['type'] == 'percentage')
+        if($data['type'] == 'percentage' || $data['type'] == 'numberic')
             $data['minimum_amount'] = 0;
         $lims_coupon_data = Coupon::find($data['coupon_id']);
         $lims_coupon_data->update($data);
@@ -71,7 +71,7 @@ class CouponController extends Controller
             $lims_coupon_data->is_active = false;
             $lims_coupon_data->save();
         }
-        return 'Coupon deleted successfully!';
+        return 'The coupon have been deleted successfully!';
     }
 
     public function destroy($id)
@@ -79,6 +79,6 @@ class CouponController extends Controller
         $lims_coupon_data = Coupon::find($id);
         $lims_coupon_data->is_active = false;
         $lims_coupon_data->save();
-        return redirect('coupons')->with('not_permitted', 'Coupon deleted successfully');
+        return redirect('coupons')->with('not_permitted', 'The coupon have been deleted successfully');
     }
 }
